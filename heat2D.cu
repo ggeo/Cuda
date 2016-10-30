@@ -41,32 +41,32 @@ int main()
 
 	/* ==== Generate random numbers for initializing temperature ==== */
 	curandState * devStates;
-    gpuErrchk( cudaMalloc( &devStates, N * sizeof(curandState) ) );
-	
-    // setup seeds
-    setup_kernel<<<1,N>>>( devStates, static_cast<unsigned>(time(NULL)) );
-    gpuErrchk( cudaPeekAtLastError() );
-    gpuErrchk( cudaDeviceSynchronize() );
+    	gpuErrchk( cudaMalloc( &devStates, N * sizeof(curandState) ) );
 
-    // Initialize temperature
-    InitializeTemperature<<<1,256>>>( devinTemp, devStates, width * height );
-    gpuErrchk( cudaPeekAtLastError() );
-    gpuErrchk( cudaDeviceSynchronize() );
-    /* ============================================================== */
+    	// setup seeds
+    	setup_kernel<<<1,N>>>( devStates, static_cast<unsigned>(time(NULL)) );
+    	gpuErrchk( cudaPeekAtLastError() );
+    	gpuErrchk( cudaDeviceSynchronize() );
+
+    	// Initialize temperature
+    	InitializeTemperature<<<1,256>>>( devinTemp, devStates, width * height );
+    	gpuErrchk( cudaPeekAtLastError() );
+    	gpuErrchk( cudaDeviceSynchronize() );
+    	/* ============================================================== */
 
 	// specify threads and blocks
 	dim3 theThreadsPerBlock( NbOfThreadsX, NbOfThreadsX );
 	dim3 theBlocksPerGrid( NbOfBlocksX, NbOfBlocksY );
 
-    /*  Run the kernel by number of time steps
-    	Because we are executing the default stream, kernel
-    	calls are executed serially.
-    	Supply the output of 1st kernel call (the output temperatures)
-    	as input to the second in order for the temperatures to be
-    	updated in the next step
-    */
-    for ( int k = 0; k < NbOfSteps; k++ )
-    {
+   	 /*  Run the kernel by number of time steps
+    	     Because we are executing the default stream, kernel
+       	     calls are executed serially.
+    	     Supply the output of 1st kernel call (the output temperatures)
+    	     as input to the second in order for the temperatures to be
+    	     updated in the next step
+    	*/
+    	for ( int k = 0; k < NbOfSteps; k++ )
+    	{
 
 		HeatConduction2D<<< theBlocksPerGrid, theThreadsPerBlock >>>( 
 
@@ -105,7 +105,6 @@ int main()
 		{
 			theFile << ouTemp[ i * width + j ] << endl;
 		}
-		
 	}
 
 	theFile.close();
