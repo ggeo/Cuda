@@ -12,3 +12,8 @@ Width and Height are 256,256 pixels and image type is 32-bit unsigned.
 
 
 ![Output Voronoi](./Voronoi2D.png)
+
+
+## Added VoronoiShared
+It uses shared memory.
+You can import the file "VoronoiShared"
