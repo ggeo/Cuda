@@ -2,7 +2,7 @@
 Creates Voronoi diagram using CUDA.
 
 ## Compiling
-nvcc -arxc=sm_35 -o Voronoi Voronoi2D.cu
+nvcc -arch=sm_35 -o Voronoi Voronoi2D.cu
 
 ## Execute
 
